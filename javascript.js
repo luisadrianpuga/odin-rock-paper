@@ -7,39 +7,65 @@ function computerPlay(){
     return random[Math.floor(Math.random() * 3)];
 }
 
-/* Ask the user for input */
-// This line will convert the input to lowercase so that the program is NOT case sensative
-const playerSelection =  prompt("Do you choose rock, paper or scissors?").toLowerCase();
-
-// This line gets the computer selection
-const computerSelection = computerPlay();
-
 /* Compare the input to the randomly generated computer input */
 /* Return a result of win or loss for to the console */
 function playRound(playerSelection, computerSelection) {
-    //Play five games
-    //This line will compare the results for a tie
-    let result = "";
-    //This line will validate the entry for a win scenerio
+   
+    let playerPoint = 0 //Holds the player point 
+    //Decides wether the player won
     if ((playerSelection == 'rock' && computerSelection == 'scissors') ||
         (playerSelection == 'scissors' && computerSelection == 'paper') ||
-        (playerSelection == 'paper' && computerSelection == 'rock')) {
-        //This line displays the win method
-        result = ('You win! ' + playerSelection + ' beats ' + computerSelection)
+        (playerSelection == 'paper' && computerSelection == 'rock'))
+    {
+        playerPoint = 1 //give the player a point
+        console.log('You win! ' + playerSelection + ' beats ' + computerSelection) //print the win
     }
-    //This line checks for a tie scenerio
-    else if (playerSelection == computerSelection) {
-        result = ('It\'s a tie. You both chose ' + playerSelection)
-    }
-    //This final else statement is for the scenerio when the user loses
     else {
-        
-        result = ('You lose! ' + computerSelection + ' beats ' + playerSelection)
-
-       
+        console.log('You lose! ' + computerSelection + ' beats ' + playerSelection)// print the loss
     }
-    console.log(result)
-}//End of play round
 
-//This line will print the results
-console.log(playRound(playerSelection, computerSelection));
+    return playerPoint //return the value for the player point
+}
+
+function game(roundsTotal = 5) {
+    let roundsPlayed = 0 //Holds the amount of rounds played
+    let playerScore = 0 //holds the player score
+
+    //While loop will run the game a total of five times
+    while (roundsPlayed < roundsTotal) {
+        let playerSelection = prompt('rock, paper, or scissors?')//Prompts user for input
+        playerSelection = playerSelection.toLowerCase();//Coverts it to lowercase 
+        //Continue of the input is not equal to a valid choice
+        if ((playerSelection != 'rock') &&
+            (playerSelection != 'paper') &&
+            (playerSelection != 'scissors'))
+        { continue }
+        //Choose a position for the computer
+        let computerSelection = computerPlay()
+        //Check if the answer is a tie
+        if (playerSelection == computerSelection) {
+            console.log('It\'s a tie. You both chose ' + playerSelection)
+            continue
+        }
+        
+        playerScore += playRound(playerSelection, computerSelection)//Get player score
+        roundsPlayed++ //Increment the round counter
+    }
+    //If the player won more than half  of the games than they one the whole game
+    if (playerScore > (roundsPlayed / 2)) {
+        console.log('You won ' + playerScore + ' out of ' + roundsPlayed + ' rounds. You win!')
+    }
+    //If the player tied in the games one and lost it was a tie
+    else if (playerScore == (roundsPlayed / 2)) {
+        console.log('You won ' + playerScore + ' out of ' + roundsPlayed + ' rounds. You tied.')
+    }
+    //Else the player lost
+    else {
+        console.log('You won ' + playerScore + ' out of ' + roundsPlayed + ' rounds. You lost!')
+    }
+    return
+}
+
+//Runs the game function
+game();
+
